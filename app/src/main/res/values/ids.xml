@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="news_feed_layout" type="id"/>
+    <!--Layout-->
+    <item name="main_news_layout" type="id" />
+    <item name="item_news_layout" type="id"/>
+</resources>
