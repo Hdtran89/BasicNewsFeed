@@ -1,4 +1,4 @@
-package com.example.newsfeed.View.Activity;
+package com.example.newsfeed.view.activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.example.newsfeed.Model.News;
+import com.example.newsfeed.model.News;
 import com.example.newsfeed.R;
-import com.example.newsfeed.View.Adapter.NewsAdapter;
-import com.example.newsfeed.ViewModel.NewsFeedViewModel;
+import com.example.newsfeed.view.adapter.NewsAdapter;
+import com.example.newsfeed.viewmodel.NewsFeedViewModel;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -35,10 +35,11 @@ public class NewsFeedActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         relativeLayout = new RelativeLayout(this);
         relativeLayout.setId(R.id.news_feed_layout);
+        setContentView(relativeLayout);
 
         setUpView();
         setUpToolBar();
@@ -55,8 +56,10 @@ public class NewsFeedActivity extends AppCompatActivity {
         RelativeLayout.LayoutParams relativeLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         RelativeLayout.LayoutParams recyclerViewParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
+        relativeLayout.setLayoutParams(relativeLayoutParams);
+        recyclerView.setLayoutParams(recyclerViewParams);
+
         relativeLayout.addView(recyclerView);
-        setContentView(relativeLayout);
     }
 
     private void setUpToolBar() {

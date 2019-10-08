@@ -1,4 +1,4 @@
-package com.example.newsfeed.View.Activity;
+package com.example.newsfeed.view.activity;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;

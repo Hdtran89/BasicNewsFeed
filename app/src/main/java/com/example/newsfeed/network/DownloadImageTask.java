@@ -1,4 +1,4 @@
-package com.example.newsfeed.Network;
+package com.example.newsfeed.network;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

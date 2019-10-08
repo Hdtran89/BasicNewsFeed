@@ -1,4 +1,4 @@
-package com.example.newsfeed.Network;
+package com.example.newsfeed.network;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -6,22 +6,27 @@ import android.util.Xml;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.example.newsfeed.Model.Image;
-import com.example.newsfeed.Model.News;
+import com.example.newsfeed.model.News;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 public class RssFeedTask extends AsyncTask<String, Void, List<News>> {
 
     private boolean isItem = false;
     private List<News> items;
-    private Image image = new Image();
     private News news = new News();
     private ProgressBar progressBar;
 
@@ -54,12 +59,13 @@ public class RssFeedTask extends AsyncTask<String, Void, List<News>> {
     @Override
     protected void onPostExecute(List<News> success) {
         // Turn off Progress Bar
-        items.addAll(success);
+        //items.addAll(success);
         progressBar.setVisibility(View.GONE);
     }
 
     //Parse the Item correctly.
     public List<News> parseRssNews(InputStream inputStream) throws XmlPullParserException, IOException {
+        List<News> resultList = new ArrayList<>();
         try {
             XmlPullParser xmlPullParser = Xml.newPullParser();
             xmlPullParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -93,39 +99,28 @@ public class RssFeedTask extends AsyncTask<String, Void, List<News>> {
                     result = xmlPullParser.getText();
                     xmlPullParser.nextTag();
                 }
-                if (name.equalsIgnoreCase("title")) {
-                    news.setTitle(result);
-                } else if (name.equalsIgnoreCase("link")) {
-                    news.setLink(result);
-                } else if (name.equalsIgnoreCase("description")) {
-                    news.setDescription(result);
-                } else if (name.equalsIgnoreCase("image")) {
-                    result = xmlPullParser.getText();
-                    xmlPullParser.nextTag();
-                    if (result.equalsIgnoreCase("url")) {
-                        image.setUrl(result);
-                    } else if (result.equalsIgnoreCase("title")) {
-                        image.setTitle(result);
-                    } else if (result.equalsIgnoreCase("link")) {
-                        image.setLink(result);
-                    } else if (result.equalsIgnoreCase("width")) {
-                        image.setWidth(result);
-                    } else if (result.equalsIgnoreCase("height")) {
-                        image.setHeight(result);
+                if(isItem) {
+                    if (name.equalsIgnoreCase("title")) {
+                        news.setTitle(result);
+                    } else if (name.equalsIgnoreCase("link")) {
+                        news.setLink(result);
+                    } else if (name.equalsIgnoreCase("description")) {
+                        news.setDescription(result);
+                    } else if (name.equalsIgnoreCase("media:content")) {
+                        news.setMediaContent(xmlPullParser.getAttributeValue(null, "url"));
                     }
                 }
 
-                if (news != null || image != null) {
+                if (news.getTitle() != null && news.getDescription() != null && news.getLink() != null && news.getMediaContent() != null) {
                     if (isItem) {
-                        Image imageItem = new Image(image.getUrl(), image.getTitle(), image.getLink(), image.getWidth(), image.getHeight());
-                        News item = new News(news.getTitle(), news.getLink(), news.getDescription(), imageItem);
-                        items.add(item);
+                        News item = new News(news.getTitle(), news.getDescription(), news.getLink(), news.getMediaContent());
+                        resultList.add(item);
                     }
 
                     isItem = false;
                 }
             }
-            return items;
+            return resultList;
         } finally {
             inputStream.close();
         }

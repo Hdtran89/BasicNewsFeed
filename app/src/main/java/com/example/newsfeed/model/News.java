@@ -1,16 +1,16 @@
-package com.example.newsfeed.Model;
+package com.example.newsfeed.model;
 
 public class News {
     private String title;
     private String description;
     private String link;
-    private Image image;
+    private String mediaContent;
 
-    public News(String title, String description, String link, Image image) {
+    public News(String title, String description, String link, String mediaContent) {
         this.title = title;
         this.description = description;
         this.link = link;
-        this.image = image;
+        this.mediaContent = mediaContent;
     }
 
     public News() {
@@ -25,8 +25,8 @@ public class News {
         return link;
     }
 
-    public Image getImage() {
-        return image;
+    public String getMediaContent() {
+        return mediaContent;
     }
 
     public String getDescription() {
@@ -45,7 +45,7 @@ public class News {
         this.description = description;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
+    public void setMediaContent(String mediaContent) {
+        this.mediaContent = mediaContent;
     }
 }
