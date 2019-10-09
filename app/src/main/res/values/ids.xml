@@ -4,4 +4,15 @@
     <!--Layout-->
     <item name="main_news_layout" type="id" />
     <item name="item_news_layout" type="id"/>
+
+    <!--News Item-->
+    <item name="news_title" type="id"/>
+    <item name="news_image" type="id"/>
+    <item name="news_progress_bar" type="id"/>
+
+    <!--Main News Item-->
+    <item name="main_news_title" type="id"/>
+    <item name="main_news_image" type="id"/>
+    <item name="main_news_description" type="id"/>
+    <item name="main_news_progress_bar" type="id"/>
 </resources>

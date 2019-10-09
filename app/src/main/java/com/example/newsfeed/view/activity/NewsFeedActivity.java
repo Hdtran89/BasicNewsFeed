@@ -4,8 +4,11 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -37,42 +40,47 @@ public class NewsFeedActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        relativeLayout = new RelativeLayout(this);
-        relativeLayout.setId(R.id.news_feed_layout);
-        setContentView(relativeLayout);
+        getSupportActionBar().setTitle(R.string.toolbar_title);
 
         setUpView();
-        setUpToolBar();
 
         progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleSmall);
 
         viewModel = ViewModelProviders.of(this).get(NewsFeedViewModel.class);
+
         getNews();
     }
 
     private void setUpView() {
-        recyclerView = new RecyclerView(this);
-
-        RelativeLayout.LayoutParams relativeLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        RelativeLayout.LayoutParams recyclerViewParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
+        relativeLayout = new RelativeLayout(this);
+        relativeLayout.setId(R.id.news_feed_layout);
+        RelativeLayout.LayoutParams relativeLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         relativeLayout.setLayoutParams(relativeLayoutParams);
+
+        recyclerView = new RecyclerView(this);
+        RecyclerView.LayoutParams recyclerViewParams = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
+        recyclerView.setVerticalScrollBarEnabled(true);
         recyclerView.setLayoutParams(recyclerViewParams);
 
         relativeLayout.addView(recyclerView);
+        setContentView(relativeLayout);
     }
 
-    private void setUpToolBar() {
-        Toolbar toolbar = new Toolbar(this);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT, 168);
-        toolbar.setLayoutParams(layoutParams);
-        toolbar.setPopupTheme(R.style.AppTheme);
-        toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        toolbar.setTitle(R.string.toolbar_title);
-        toolbar.setVisibility(View.VISIBLE);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        return true;
+    }
 
-        relativeLayout.addView(toolbar, 0);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.refreshBtn:
+                getNews();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void getNews() {

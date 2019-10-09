@@ -93,7 +93,6 @@ public class RssFeedTask extends AsyncTask<String, Void, List<News>> {
                     }
                 }
                 //Parse the Items
-                Log.d("Test", "Parsing name ==> " + name);
                 String result = "";
                 if (xmlPullParser.next() == XmlPullParser.TEXT) {
                     result = xmlPullParser.getText();

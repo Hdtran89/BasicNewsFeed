@@ -13,21 +13,21 @@ import java.io.InputStream;
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
     private ImageView imageView;
-    private ProgressBar progressBar;
+    //private ProgressBar progressBar;
 
     public DownloadImageTask(ImageView imageView, ProgressBar progressBar) {
         this.imageView = imageView;
-        this.progressBar = progressBar;
+        //this.progressBar = progressBar;
     }
 
-    public DownloadImageTask(ProgressBar progressBar) {
-        this.progressBar = progressBar;
-    }
+//    public DownloadImageTask(ProgressBar progressBar) {
+//        this.progressBar = progressBar;
+//    }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressBar.setVisibility(View.VISIBLE);
+//        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -47,6 +47,6 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     @Override
     protected void onPostExecute(Bitmap bitmap) {
         imageView.setImageBitmap(bitmap);
-        progressBar.setVisibility(View.GONE);
+        //progressBar.setVisibility(View.GONE);
     }
 }
