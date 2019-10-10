@@ -118,7 +118,7 @@ public class NewsFeedActivity extends AppCompatActivity implements NewsAdapter.O
             public int getSpanSize(int position) {
                 switch (newsAdapter.getItemViewType(position)){
                     case TYPE_MAIN_NEWS:
-                        return 1;
+                        return 2;
                     case TYPE_NEWS_ITEM:
                         if(getResources().getConfiguration().screenLayout < Configuration.SCREENLAYOUT_SIZE_XLARGE){
                             return 2;
