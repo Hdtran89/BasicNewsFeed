@@ -21,15 +21,21 @@ import static com.example.newsfeed.util.NewsFeedConstants.TYPE_NEWS_ITEM;
 
 public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<News> newsList;
-
-    public NewsAdapter(List<News> newsList) {
-        this.newsList = newsList;
+    public interface OnItemClickListener {
+        void onItemClick(News news);
     }
+
+    private List<News> newsList;
+    private OnItemClickListener listener;
 
     private View titleTextView;
     private View imageView;
     private View descriptionTextView;
+
+    public NewsAdapter(List<News> newsList, OnItemClickListener listener) {
+        this.newsList = newsList;
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
@@ -70,11 +76,11 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         switch (holder.getItemViewType()) {
             case TYPE_MAIN_NEWS:
                 MainNewsViewHolder mainNewsViewHolder = (MainNewsViewHolder) holder;
-                mainNewsViewHolder.setMainNewsItem(newsList.get(position));
+                mainNewsViewHolder.setMainNewsItem(newsList.get(position), listener);
                 break;
             case TYPE_NEWS_ITEM:
                 NewsViewHolder newsViewHolder = (NewsViewHolder) holder;
-                newsViewHolder.setNewsItem(newsList.get(position));
+                newsViewHolder.setNewsItem(newsList.get(position), listener);
                 break;
         }
     }
@@ -84,17 +90,16 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return newsList.size();
     }
 
-
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
             return TYPE_MAIN_NEWS;
-        } else {
-            return TYPE_NEWS_ITEM;
         }
+
+        return TYPE_NEWS_ITEM;
     }
 
-    public static class NewsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class NewsViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imageView;
         private TextView titleText;
@@ -109,17 +114,18 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             progressBar = new ProgressBar(itemView.getContext());
 
             setUpNewsItemView(linearLayout);
-            itemView.setOnClickListener(this);
         }
 
-        public void setNewsItem(News news) {
+        public void setNewsItem(final News news, final OnItemClickListener listener) {
             new DownloadImageTask(imageView, progressBar).execute(news.getMediaContent());
             titleText.setText(news.getTitle());
-        }
 
-        @Override
-        public void onClick(View v) {
-            //Handler
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(news);
+                }
+            });
         }
 
         public void setUpNewsItemView(LinearLayout linearLayout) {
@@ -136,7 +142,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    public static class MainNewsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class MainNewsViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imageView;
         private TextView titleText;
@@ -153,8 +159,6 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             descriptionText = new TextView(itemView.getContext());
 
             setUpMainNewsItemView(linearLayout);
-
-            itemView.setOnClickListener(this);
         }
 
         public void setUpMainNewsItemView(LinearLayout linearLayout) {
@@ -173,15 +177,17 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             descriptionText.setTextColor(linearLayout.getResources().getColor(R.color.colorAccent));
         }
 
-        public void setMainNewsItem(News news) {
+        public void setMainNewsItem(final News news, final OnItemClickListener listener) {
             new DownloadImageTask(imageView, progressBar).execute(news.getMediaContent());
             titleText.setText(news.getTitle());
             descriptionText.setText(news.getDescription());
-        }
 
-        @Override
-        public void onClick(View v) {
-            //Handler
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(news);
+                }
+            });
         }
     }
 }

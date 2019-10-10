@@ -1,6 +1,7 @@
 package com.example.newsfeed.view.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,9 +23,12 @@ import com.example.newsfeed.viewmodel.NewsFeedViewModel;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import static com.example.newsfeed.util.NewsFeedConstants.NEWS_FEED_ITEM_WEB_LINK;
 import static com.example.newsfeed.util.NewsFeedConstants.TYPE_MAIN_NEWS;
 import static com.example.newsfeed.util.NewsFeedConstants.TYPE_NEWS_ITEM;
-public class NewsFeedActivity extends AppCompatActivity {
+
+public class NewsFeedActivity extends AppCompatActivity implements NewsAdapter.OnItemClickListener {
 
     private LinearLayout linearLayout;
     private NewsFeedViewModel viewModel;
@@ -43,7 +47,6 @@ public class NewsFeedActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(NewsFeedViewModel.class);
 
         getNews();
-
     }
 
     private void setUpView() {
@@ -51,7 +54,7 @@ public class NewsFeedActivity extends AppCompatActivity {
         linearLayout.setId(R.id.news_feed_layout);
         LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         linearLayout.setLayoutParams(linearLayoutParams);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
+
         recyclerView = new RecyclerView(this);
         RecyclerView.LayoutParams recyclerViewParams = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
         recyclerView.setVerticalScrollBarEnabled(true);
@@ -92,12 +95,20 @@ public class NewsFeedActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onItemClick(News news) {
+        Intent intent = new Intent(this, NewsFeedDetailsActivity.class);
+        intent.putExtra(NEWS_FEED_ITEM_WEB_LINK, news.getLink());
+        startActivity(intent);
+    }
+
     private void setUpAdapter(List<News> list) {
-        newsAdapter = new NewsAdapter(list);
+        newsAdapter = new NewsAdapter(list, this);
         //Tablet 3 columns, Phone 2.
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
 
-        if(getResources().getConfiguration().screenLayout < Configuration.SCREENLAYOUT_SIZE_LARGE){
+        if(getResources().getConfiguration().screenLayout < Configuration.SCREENLAYOUT_SIZE_XLARGE){
             gridLayoutManager = new GridLayoutManager(this, 3);
         }
 
@@ -106,14 +117,14 @@ public class NewsFeedActivity extends AppCompatActivity {
             public int getSpanSize(int position) {
                 switch (newsAdapter.getItemViewType(position)){
                     case TYPE_MAIN_NEWS:
-                        if(getResources().getConfiguration().screenLayout < Configuration.SCREENLAYOUT_SIZE_LARGE){
-                            return 3;
-                        }
-                        return 2;
+                        return 1;
                     case TYPE_NEWS_ITEM:
+                        if(getResources().getConfiguration().screenLayout < Configuration.SCREENLAYOUT_SIZE_XLARGE){
+                            return 2;
+                        }
                         return 1;
                     default:
-                        return 1;
+                        return -1;
                 }
             }
         });
