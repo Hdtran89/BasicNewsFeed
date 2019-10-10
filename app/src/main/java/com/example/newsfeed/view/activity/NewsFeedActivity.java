@@ -1,13 +1,14 @@
 package com.example.newsfeed.view.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,7 +36,7 @@ public class NewsFeedActivity extends AppCompatActivity implements NewsAdapter.O
     private RecyclerView recyclerView;
 
     private NewsAdapter newsAdapter;
-    private ProgressDialog progressBar;
+    private ProgressBar progressBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class NewsFeedActivity extends AppCompatActivity implements NewsAdapter.O
 
         linearLayout.addView(recyclerView);
 
-        progressBar = new ProgressDialog(this);
+        progressBar = new ProgressBar(this);
 
         setContentView(linearLayout);
     }
@@ -86,7 +87,7 @@ public class NewsFeedActivity extends AppCompatActivity implements NewsAdapter.O
 
     private void getNews() {
         try {
-            progressBar.show();
+            progressBar.setVisibility(View.VISIBLE);
             setUpAdapter(viewModel.fetchNews(progressBar));
         } catch (ExecutionException e) {
             Log.e("Test", e.toString());

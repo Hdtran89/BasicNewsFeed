@@ -1,9 +1,10 @@
 package com.example.newsfeed.network;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Xml;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.newsfeed.model.News;
 
@@ -21,16 +22,16 @@ public class RssFeedTask extends AsyncTask<String, Void, List<News>> {
     private boolean isItem = false;
     private List<News> items;
     private News news = new News();
-    private ProgressDialog progressBar;
+    private ProgressBar progressBar;
 
-    public RssFeedTask(ProgressDialog progressBar) {
+    public RssFeedTask(ProgressBar progressBar) {
         this.progressBar = progressBar;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressBar.show();
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -52,8 +53,7 @@ public class RssFeedTask extends AsyncTask<String, Void, List<News>> {
     @Override
     protected void onPostExecute(List<News> success) {
         // Turn off Progress Bar
-        //items.addAll(success);
-        progressBar.hide();
+        progressBar.setVisibility(View.GONE);
     }
 
     //Parse the Item correctly.
@@ -109,6 +109,11 @@ public class RssFeedTask extends AsyncTask<String, Void, List<News>> {
                         resultList.add(item);
                     }
 
+                    //Reset
+                    news.setTitle(null);
+                    news.setMediaContent(null);
+                    news.setLink(null);
+                    news.setDescription(null);
                     isItem = false;
                 }
             }

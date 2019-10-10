@@ -99,13 +99,13 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return TYPE_NEWS_ITEM;
     }
 
-    public static class NewsViewHolder extends RecyclerView.ViewHolder {
+    private static class NewsViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imageView;
         private TextView titleText;
         private ProgressBar progressBar;
 
-        public NewsViewHolder(View itemView) {
+        private NewsViewHolder(View itemView) {
             super(itemView);
             LinearLayout linearLayout = (LinearLayout) itemView;
 
@@ -116,7 +116,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             setUpNewsItemView(linearLayout);
         }
 
-        public void setNewsItem(final News news, final OnItemClickListener listener) {
+        private void setNewsItem(final News news, final OnItemClickListener listener) {
             new DownloadImageTask(imageView, progressBar).execute(news.getMediaContent());
             titleText.setText(news.getTitle());
 
@@ -128,28 +128,28 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             });
         }
 
-        public void setUpNewsItemView(LinearLayout linearLayout) {
+        private void setUpNewsItemView(LinearLayout linearLayout) {
             LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             LinearLayout.LayoutParams titleTextParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//            LinearLayout.LayoutParams progressBarParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams progressBarParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
             linearLayout.addView(imageView, imageParams);
             linearLayout.addView(titleText, titleTextParams);
-//            linearLayout.addView(progressBar, progressBarParams);
+            linearLayout.addView(progressBar, progressBarParams);
 
             titleText.setTextSize(12.f);
             titleText.setTextColor(itemView.getResources().getColor(R.color.colorAccent));
         }
     }
 
-    public static class MainNewsViewHolder extends RecyclerView.ViewHolder {
+    private static class MainNewsViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imageView;
         private TextView titleText;
         private TextView descriptionText;
         private ProgressBar progressBar;
 
-        public MainNewsViewHolder(View itemView) {
+        private MainNewsViewHolder(View itemView) {
             super(itemView);
             LinearLayout linearLayout = new LinearLayout(itemView.getContext());
 
@@ -161,23 +161,23 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             setUpMainNewsItemView(linearLayout);
         }
 
-        public void setUpMainNewsItemView(LinearLayout linearLayout) {
+        private void setUpMainNewsItemView(LinearLayout linearLayout) {
 
             LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             LinearLayout.LayoutParams titleTextParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             LinearLayout.LayoutParams descriptionTextParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//            LinearLayout.LayoutParams progressBarParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams progressBarParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
             linearLayout.addView(imageView, imageParams);
             linearLayout.addView(titleText, titleTextParams);
             linearLayout.addView(descriptionText, descriptionTextParams);
-//            linearLayout.addView(progressBar, progressBarParams);
+            linearLayout.addView(progressBar, progressBarParams);
             titleText.setTextSize(12.f);
             titleText.setTextColor(linearLayout.getResources().getColor(R.color.colorAccent));
             descriptionText.setTextColor(linearLayout.getResources().getColor(R.color.colorAccent));
         }
 
-        public void setMainNewsItem(final News news, final OnItemClickListener listener) {
+        private void setMainNewsItem(final News news, final OnItemClickListener listener) {
             new DownloadImageTask(imageView, progressBar).execute(news.getMediaContent());
             titleText.setText(news.getTitle());
             descriptionText.setText(news.getDescription());

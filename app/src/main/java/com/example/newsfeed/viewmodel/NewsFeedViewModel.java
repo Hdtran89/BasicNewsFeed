@@ -1,6 +1,6 @@
 package com.example.newsfeed.viewmodel;
 
-import android.app.ProgressDialog;
+import android.widget.ProgressBar;
 
 import androidx.lifecycle.ViewModel;
 
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class NewsFeedViewModel extends ViewModel {
-    public List<News> fetchNews(ProgressDialog progressBar) throws ExecutionException, InterruptedException {
+    public List<News> fetchNews(ProgressBar progressBar) throws ExecutionException, InterruptedException {
         return new RssFeedTask(progressBar).execute(NewsFeedConstants.NEWS_FEED_URL).get();
     }
 }

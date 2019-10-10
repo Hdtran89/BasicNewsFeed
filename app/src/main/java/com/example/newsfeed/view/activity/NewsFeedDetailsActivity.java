@@ -1,12 +1,9 @@
 package com.example.newsfeed.view.activity;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.AbsoluteLayout;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
@@ -27,6 +24,7 @@ public class NewsFeedDetailsActivity extends AppCompatActivity {
         if (extras != null) {
             webUrl = extras.getString(NEWS_FEED_ITEM_WEB_LINK);
         }
+
         RelativeLayout relativeLayout = new RelativeLayout(this);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         relativeLayout.setLayoutParams(layoutParams);
