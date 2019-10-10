@@ -1,16 +1,12 @@
 package com.example.newsfeed.network;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Xml;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import com.example.newsfeed.model.News;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -20,24 +16,21 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 public class RssFeedTask extends AsyncTask<String, Void, List<News>> {
 
     private boolean isItem = false;
     private List<News> items;
     private News news = new News();
-    private ProgressBar progressBar;
+    private ProgressDialog progressBar;
 
-    public RssFeedTask(ProgressBar progressBar) {
+    public RssFeedTask(ProgressDialog progressBar) {
         this.progressBar = progressBar;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.show();
     }
 
     @Override
@@ -60,7 +53,7 @@ public class RssFeedTask extends AsyncTask<String, Void, List<News>> {
     protected void onPostExecute(List<News> success) {
         // Turn off Progress Bar
         //items.addAll(success);
-        progressBar.setVisibility(View.GONE);
+        progressBar.hide();
     }
 
     //Parse the Item correctly.
@@ -98,7 +91,7 @@ public class RssFeedTask extends AsyncTask<String, Void, List<News>> {
                     result = xmlPullParser.getText();
                     xmlPullParser.nextTag();
                 }
-                if(isItem) {
+                if (isItem) {
                     if (name.equalsIgnoreCase("title")) {
                         news.setTitle(result);
                     } else if (name.equalsIgnoreCase("link")) {
