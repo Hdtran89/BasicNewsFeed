@@ -47,7 +47,6 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     @Override
     protected void onPostExecute(Bitmap bitmap) {
         BitmapDrawable bitmapDrawable = new BitmapDrawable(context.getResources(), bitmap);
-        //imageView.setImageBitmap(bitmap);
         imageView.setBackground(bitmapDrawable);
         imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         progressBar.setVisibility(View.GONE);

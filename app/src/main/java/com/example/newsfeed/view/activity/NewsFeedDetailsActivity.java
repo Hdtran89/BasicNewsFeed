@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.newsfeed.R;
 
+import static com.example.newsfeed.util.NewsFeedConstants.MOBILE_DISPLAY;
 import static com.example.newsfeed.util.NewsFeedConstants.NEWS_FEED_ITEM_WEB_LINK;
 
 public class NewsFeedDetailsActivity extends AppCompatActivity {
@@ -22,7 +23,7 @@ public class NewsFeedDetailsActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         String webUrl = "";
         if (extras != null) {
-            webUrl = extras.getString(NEWS_FEED_ITEM_WEB_LINK);
+            webUrl = extras.getString(NEWS_FEED_ITEM_WEB_LINK) + MOBILE_DISPLAY;
         }
 
         RelativeLayout relativeLayout = new RelativeLayout(this);

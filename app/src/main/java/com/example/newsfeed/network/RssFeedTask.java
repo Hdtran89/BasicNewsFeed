@@ -17,6 +17,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.newsfeed.util.NewsFeedConstants.RSS_DESCRIPTION_TYPE;
+import static com.example.newsfeed.util.NewsFeedConstants.RSS_ITEM_TYPE;
+import static com.example.newsfeed.util.NewsFeedConstants.RSS_LINK_TYPE;
+import static com.example.newsfeed.util.NewsFeedConstants.RSS_MEDIA_CONTENT_TYPE;
+import static com.example.newsfeed.util.NewsFeedConstants.RSS_TITLE_TYPE;
+import static com.example.newsfeed.util.NewsFeedConstants.RSS_URL_TYPE;
+
 public class RssFeedTask extends AsyncTask<String, Void, List<News>> {
 
     private boolean isItem = false;
@@ -43,9 +50,9 @@ public class RssFeedTask extends AsyncTask<String, Void, List<News>> {
             items = parseRssNews(inputStream);
             return items;
         } catch (IOException e) {
-            Log.e("Test", e.toString());
+            Log.e("Error", e.toString());
         } catch (XmlPullParserException e) {
-            Log.e("Test", e.toString());
+            Log.e("Error", e.toString());
         }
         return null;
     }
@@ -73,14 +80,14 @@ public class RssFeedTask extends AsyncTask<String, Void, List<News>> {
                     continue;
 
                 if (eventType == XmlPullParser.END_TAG) {
-                    if (name.equalsIgnoreCase("item")) {
+                    if (name.equalsIgnoreCase(RSS_ITEM_TYPE)) {
                         isItem = false;
                     }
                     continue;
                 }
 
                 if (eventType == XmlPullParser.START_TAG) {
-                    if (name.equalsIgnoreCase("item")) {
+                    if (name.equalsIgnoreCase(RSS_ITEM_TYPE)) {
                         isItem = true;
                         continue;
                     }
@@ -92,14 +99,14 @@ public class RssFeedTask extends AsyncTask<String, Void, List<News>> {
                     xmlPullParser.nextTag();
                 }
                 if (isItem) {
-                    if (name.equalsIgnoreCase("title")) {
+                    if (name.equalsIgnoreCase(RSS_TITLE_TYPE)) {
                         news.setTitle(result);
-                    } else if (name.equalsIgnoreCase("link")) {
+                    } else if (name.equalsIgnoreCase(RSS_LINK_TYPE)) {
                         news.setLink(result);
-                    } else if (name.equalsIgnoreCase("description")) {
+                    } else if (name.equalsIgnoreCase(RSS_DESCRIPTION_TYPE)) {
                         news.setDescription(result);
-                    } else if (name.equalsIgnoreCase("media:content")) {
-                        news.setMediaContent(xmlPullParser.getAttributeValue(null, "url"));
+                    } else if (name.equalsIgnoreCase(RSS_MEDIA_CONTENT_TYPE)) {
+                        news.setMediaContent(xmlPullParser.getAttributeValue(null, RSS_URL_TYPE));
                     }
                 }
 

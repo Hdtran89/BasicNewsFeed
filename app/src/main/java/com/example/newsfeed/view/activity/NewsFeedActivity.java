@@ -90,9 +90,9 @@ public class NewsFeedActivity extends AppCompatActivity implements NewsAdapter.O
             progressBar.setVisibility(View.VISIBLE);
             setUpAdapter(viewModel.fetchNews(progressBar));
         } catch (ExecutionException e) {
-            Log.e("Test", e.toString());
+            Log.e("Error", e.toString());
         } catch (InterruptedException e) {
-            Log.e("Test", e.toString());
+            Log.e("Error", e.toString());
         }
     }
 
